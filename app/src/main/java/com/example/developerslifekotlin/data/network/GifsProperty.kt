@@ -1,7 +1,7 @@
-package com.example.developerslifekotlin.network
+package com.example.developerslifekotlin.data.network
 
 import android.os.Parcelable
-import com.example.developerslifekotlin.database.DatabaseGif
+import com.example.developerslifekotlin.data.database.DatabaseGif
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
