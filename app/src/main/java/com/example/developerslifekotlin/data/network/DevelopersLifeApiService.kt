@@ -1,4 +1,4 @@
-package com.example.developerslifekotlin.network
+package com.example.developerslifekotlin.data.network
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -34,5 +34,6 @@ interface DevelopersLifeApiService {
 }
 
 object DevelopersLifeApi {
-    val retrofitService : DevelopersLifeApiService by lazy { retrofit.create(DevelopersLifeApiService::class.java) }
+    val retrofitService : DevelopersLifeApiService by lazy { retrofit.create(
+        DevelopersLifeApiService::class.java) }
 }

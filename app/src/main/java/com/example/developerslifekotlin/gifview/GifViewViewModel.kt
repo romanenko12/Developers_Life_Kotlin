@@ -1,15 +1,21 @@
 package com.example.developerslifekotlin.gifview
 
-import androidx.lifecycle.*
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.launch
 import androidx.lifecycle.viewModelScope
-import com.example.developerslifekotlin.database.DatabaseGif
-import com.example.developerslifekotlin.network.*
-import com.example.developerslifekotlin.repository.GifRepository
+import com.example.developerslifekotlin.data.database.DatabaseGif
+import com.example.developerslifekotlin.data.network.DevelopersLifeApiFilter
+import com.example.developerslifekotlin.data.repository.GifRepository
+import javax.inject.Inject
 
 enum class DevelopersLifeApiStatus { LOADING, ERROR, DONE }
 
-class GifViewViewModel(private val repository: GifRepository) : ViewModel() {
+class GifViewViewModel @Inject constructor(
+    private val repository: GifRepository
+    ) : ViewModel() {
 
     private val maxPage = 2000
 

@@ -1,4 +1,4 @@
-package com.example.developerslifekotlin.database
+package com.example.developerslifekotlin.data.database
 
 import androidx.room.Dao
 import androidx.room.Insert

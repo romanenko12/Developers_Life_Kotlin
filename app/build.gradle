@@ -41,6 +41,9 @@ dependencies {
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$version_kotlin"
 
+    //fragment
+    implementation "androidx.fragment:fragment-ktx:$version_fragment"
+
     // Constraint Layout
     implementation "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
 
