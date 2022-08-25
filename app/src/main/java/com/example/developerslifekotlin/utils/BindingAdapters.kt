@@ -1,4 +1,4 @@
-package com.example.developerslifekotlin
+package com.example.developerslifekotlin.utils
 
 import android.view.View
 import android.widget.ImageView
@@ -6,6 +6,7 @@ import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.developerslifekotlin.R
 import com.example.developerslifekotlin.gifview.DevelopersLifeApiStatus
 
 @BindingAdapter("imageUrl")
@@ -31,12 +32,12 @@ fun bindStatus(statusImageView: ImageView, status: DevelopersLifeApiStatus?) {
             statusImageView.visibility = View.VISIBLE
             statusImageView.setImageResource(R.drawable.loading_animation)
         }
-        DevelopersLifeApiStatus.ERROR -> {
-            statusImageView.visibility = View.VISIBLE
-            statusImageView.setImageResource(R.drawable.ic_connection_error)
-        }
         DevelopersLifeApiStatus.DONE -> {
             statusImageView.visibility = View.GONE
+        }
+        else -> {
+            statusImageView.visibility = View.VISIBLE
+            statusImageView.setImageResource(R.drawable.ic_connection_error)
         }
     }
 }
@@ -47,11 +48,11 @@ fun bindGifStatus(statusImageView: ImageView, status: DevelopersLifeApiStatus?) 
         DevelopersLifeApiStatus.LOADING -> {
             statusImageView.visibility = View.GONE
         }
-        DevelopersLifeApiStatus.ERROR -> {
-            statusImageView.visibility = View.GONE
-        }
         DevelopersLifeApiStatus.DONE -> {
             statusImageView.visibility = View.VISIBLE
+        }
+        else -> {
+            statusImageView.visibility = View.GONE
         }
     }
 }

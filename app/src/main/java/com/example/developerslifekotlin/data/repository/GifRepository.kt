@@ -1,10 +1,10 @@
-package com.example.developerslifekotlin.repository
+package com.example.developerslifekotlin.data.repository
 
-import com.example.developerslifekotlin.database.DatabaseGif
-import com.example.developerslifekotlin.database.GifsDatabaseDao
-import com.example.developerslifekotlin.network.DevelopersLifeApiFilter
-import com.example.developerslifekotlin.network.DevelopersLifeApiService
-import com.example.developerslifekotlin.network.asDatabaseModel
+import com.example.developerslifekotlin.data.database.DatabaseGif
+import com.example.developerslifekotlin.data.database.GifsDatabaseDao
+import com.example.developerslifekotlin.data.network.DevelopersLifeApiFilter
+import com.example.developerslifekotlin.data.network.DevelopersLifeApiService
+import com.example.developerslifekotlin.data.network.asDatabaseModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
