@@ -1,7 +1,6 @@
 package com.example.developerslifekotlin.data.network
 
 import android.os.Parcelable
-import com.example.developerslifekotlin.data.database.DatabaseGif
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -28,11 +27,3 @@ data class NetworkGif(
     val commentsCount: Int,
     val fileSize: Int,
     val canVote: Boolean) : Parcelable
-
-fun GifsProperty.asDatabaseModel(): DatabaseGif {
-    val gif = result[(0 until PAGE_SIZE).random()]
-    return  DatabaseGif(
-            url = gif.gifURL,
-            description = gif.description)
-}
-

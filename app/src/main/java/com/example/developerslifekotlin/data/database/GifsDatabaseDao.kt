@@ -4,22 +4,25 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Maybe
+import io.reactivex.rxjava3.core.Single
 
 @Dao
 interface GifsDatabaseDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(gif: DatabaseGif)
+    fun insert(gif: DatabaseGif): Completable
 
     @Query("SELECT * FROM gifs_table WHERE id = :key")
-    suspend fun get(key: Long): DatabaseGif
+    fun get(key: Int): Single<DatabaseGif>
 
     @Query("SELECT COUNT(1) FROM gifs_table")
-    suspend fun size(): Long
+    fun size(): Maybe<Int>
 
     @Query("DELETE FROM gifs_table")
-    suspend fun clear()
+    fun clear()
 
     @Query("DELETE FROM sqlite_sequence")
-    suspend fun resetTable()
+    fun resetTable()
 }

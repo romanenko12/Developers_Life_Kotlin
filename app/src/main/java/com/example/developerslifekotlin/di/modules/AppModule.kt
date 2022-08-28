@@ -10,7 +10,12 @@ import dagger.Module
 import dagger.Provides
 import dagger.Reusable
 
-@Module(includes = [ViewModuleModule::class])
+@Module(
+    includes = [
+        ViewModuleModule::class,
+        UseCasesModule::class
+    ]
+)
 class AppModule {
 
     @Provides

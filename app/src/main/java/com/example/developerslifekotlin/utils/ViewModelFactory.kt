@@ -1,4 +1,4 @@
-package com.example.developerslifekotlin.gifview
+package com.example.developerslifekotlin.utils
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
