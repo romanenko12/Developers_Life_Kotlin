@@ -3,25 +3,26 @@ package com.example.developerslifekotlin.gifview
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.launch
-import androidx.lifecycle.viewModelScope
 import com.example.developerslifekotlin.data.database.DatabaseGif
 import com.example.developerslifekotlin.data.network.DevelopersLifeApiFilter
-import com.example.developerslifekotlin.data.repository.GifRepository
+import com.example.developerslifekotlin.usecases.ClearDatabaseUseCase
+import com.example.developerslifekotlin.usecases.GetGifUseCase
+import com.example.developerslifekotlin.utils.BaseRxViewModel
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.kotlin.subscribeBy
+import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 enum class DevelopersLifeApiStatus { LOADING, ERROR, DONE }
 
 class GifViewViewModel @Inject constructor(
-    private val repository: GifRepository
-    ) : ViewModel() {
-
-    private val maxPage = 2000
+    private val getGifUseCase: GetGifUseCase,
+    private val clearDatabaseUseCase: ClearDatabaseUseCase,
+) : BaseRxViewModel() {
 
     private var currentFilter: DevelopersLifeApiFilter = DevelopersLifeApiFilter.SHOW_LATEST
 
-    private val numGif = MutableLiveData<Long>()
+    private val numGif = MutableLiveData<Int>()
 
     private val _status = MutableLiveData<DevelopersLifeApiStatus>()
     val status: LiveData<DevelopersLifeApiStatus>
@@ -44,67 +45,70 @@ class GifViewViewModel @Inject constructor(
     }
 
     init {
-        init()
-    }
-
-    private fun randomNumber() = (0..maxPage).random()
-
-    private fun init() {
-        viewModelScope.launch {
-            repository.clearDatabase()
-            numGif.value = 0
-            getGifFromServer(currentFilter, randomNumber())
-        }
+        clearDatabase()
     }
 
     fun onNext() {
-        viewModelScope.launch {
-            if (numGif.value!! == repository.getCount())
-                getGifFromServer(currentFilter, randomNumber())
-            else {
-                numGif.value = numGif.value?.plus(1)
-                getGifFromDatabase(numGif.value!!)
-            }
-        }
+        numGif.value = numGif.value?.plus(1)
+        numGif.value?.let { getGif(currentFilter, it) }
     }
 
     fun onPrev() {
-        if(status.value == DevelopersLifeApiStatus.DONE)
+        if (status.value == DevelopersLifeApiStatus.DONE) {
             numGif.value = numGif.value?.minus(1)
-        getGifFromDatabase(numGif.value!!)
+        }
+        numGif.value?.let { getGif(currentFilter, it) }
     }
 
-    private fun getGifFromDatabase(id: Long) {
-        viewModelScope.launch {
-            _status.value = DevelopersLifeApiStatus.LOADING
-            try {
-                _gif.value = repository.getGif(id)
-                _status.value = DevelopersLifeApiStatus.DONE
-            } catch (e: Exception) {
-                _status.value = DevelopersLifeApiStatus.ERROR
+    private fun getGif(category: DevelopersLifeApiFilter, id: Int) {
+        getGifUseCase(category, id)
+            .subscribeOn(Schedulers.io())
+            .doOnSubscribe { _status.value = DevelopersLifeApiStatus.LOADING }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    _gif.value = it
+                    _status.value = DevelopersLifeApiStatus.DONE
+                },
+                onError = {
+                    _status.value = DevelopersLifeApiStatus.ERROR
+                    numGif.value = numGif.value?.minus(1)
+                }
+            )
+            .disposeOnFinish()
+    }
+
+    private fun clearDatabase() {
+        clearDatabaseUseCase()
+            .subscribeOn(Schedulers.io())
+            .doOnSubscribe { _status.value = DevelopersLifeApiStatus.LOADING }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onComplete = {
+                    _status.value = DevelopersLifeApiStatus.DONE
+                    numGif.value = 0
+                    onNext()
+                },
+                onError = {
+                    _status.value = DevelopersLifeApiStatus.ERROR
+                    numGif.value = 0
+                }
+            )
+            .disposeOnFinish()
+    }
+
+    fun chooseCategory(category: Int) {
+        when (category) {
+            0 -> {
+                currentFilter = DevelopersLifeApiFilter.SHOW_LATEST
+            }
+            1 -> {
+                currentFilter = DevelopersLifeApiFilter.SHOW_TOP
+            }
+            2 -> {
+                currentFilter = DevelopersLifeApiFilter.SHOW_HOT
             }
         }
-    }
-
-    private fun getGifFromServer(category: DevelopersLifeApiFilter, number: Int) {
-        viewModelScope.launch {
-            _status.value = DevelopersLifeApiStatus.LOADING
-            try {
-                _gif.value = repository.downloadGif(category, number)
-                _status.value = DevelopersLifeApiStatus.DONE
-                numGif.value = numGif.value?.plus(1)
-            } catch (e: Exception) {
-                _status.value = DevelopersLifeApiStatus.ERROR
-            }
-        }
-    }
-
-    fun chooseCategory(category: Int){
-        when(category){
-            0 -> { currentFilter = DevelopersLifeApiFilter.SHOW_LATEST }
-            1 -> { currentFilter = DevelopersLifeApiFilter.SHOW_TOP }
-            2 -> { currentFilter = DevelopersLifeApiFilter.SHOW_HOT }
-        }
-        init()
+        clearDatabase()
     }
 }

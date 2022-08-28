@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.developerslifekotlin.databinding.FragmentGifviewBinding
+import com.example.developerslifekotlin.utils.ViewModelFactory
 import com.example.developerslifekotlin.utils.appComponent
 import com.google.android.material.tabs.TabLayout
 import javax.inject.Inject
@@ -36,11 +37,12 @@ class GifViewFragment : Fragment() {
         binding.viewModel = viewModel
 
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                viewModel.chooseCategory(tab!!.position)
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                viewModel.chooseCategory(tab.position)
             }
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
         })
 
         return binding.root

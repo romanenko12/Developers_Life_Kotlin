@@ -62,6 +62,7 @@ dependencies {
 
     // Room and Lifecycle dependencies
     implementation "androidx.room:room-runtime:$version_room"
+    implementation "androidx.room:room-rxjava3:$version_room_rx"
     kapt "androidx.room:room-compiler:$version_room"
 
     // Kotlin Extensions and Coroutines support for Room
@@ -71,6 +72,7 @@ dependencies {
     implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
 
     // Retrofit with Moshi Converter
+    implementation "com.squareup.retrofit2:adapter-rxjava3:$version_retrofit_rx_adapter"
     implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
 
     // Glide
@@ -79,6 +81,11 @@ dependencies {
     // Dagger 2
     implementation "com.google.dagger:dagger:$version_dagger"
     kapt "com.google.dagger:dagger-compiler:$version_dagger"
+
+    // RxJava
+    implementation "io.reactivex.rxjava3:rxjava:$version_rx_java"
+    implementation "io.reactivex.rxjava3:rxandroid:$version_rx_android"
+    implementation "io.reactivex.rxjava3:rxkotlin:$version_rx_kotlin"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

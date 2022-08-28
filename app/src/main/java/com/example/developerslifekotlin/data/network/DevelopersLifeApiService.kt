@@ -2,11 +2,12 @@ package com.example.developerslifekotlin.data.network
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import io.reactivex.rxjava3.core.Single
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 enum class DevelopersLifeApiFilter(val value: String) {
     SHOW_LATEST("latest"),
@@ -23,14 +24,15 @@ private val moshi = Moshi.Builder()
 
 private val retrofit = Retrofit.Builder()
         .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .baseUrl(BASE_URL)
         .build()
 
 interface DevelopersLifeApiService {
     @GET("/{category}/{number}?json=true&pageSize=$PAGE_SIZE")
-    suspend fun getProperties(
+    fun getProperties(
         @Path("category") category: String,
-        @Path("number") number: Int): GifsProperty
+        @Path("number") number: Int): Single<GifsProperty>
 }
 
 object DevelopersLifeApi {
