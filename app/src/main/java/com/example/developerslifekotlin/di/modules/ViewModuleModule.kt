@@ -2,7 +2,7 @@ package com.example.developerslifekotlin.di.modules
 
 import androidx.lifecycle.ViewModel
 import com.example.developerslifekotlin.di.utils.ViewModelKey
-import com.example.developerslifekotlin.gifview.GifViewViewModel
+import com.example.developerslifekotlin.presentation.gifview.GifViewViewModel
 import com.example.developerslifekotlin.utils.ViewModelFactory
 import dagger.Binds
 import dagger.Module

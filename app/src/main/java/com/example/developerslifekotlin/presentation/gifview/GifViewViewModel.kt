@@ -1,12 +1,12 @@
-package com.example.developerslifekotlin.gifview
+package com.example.developerslifekotlin.presentation.gifview
 
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.developerslifekotlin.data.database.DatabaseGif
 import com.example.developerslifekotlin.data.network.DevelopersLifeApiFilter
-import com.example.developerslifekotlin.usecases.ClearDatabaseUseCase
-import com.example.developerslifekotlin.usecases.GetGifUseCase
+import com.example.developerslifekotlin.domain.entity.DomainGif
+import com.example.developerslifekotlin.domain.usecases.ClearDatabaseUseCase
+import com.example.developerslifekotlin.domain.usecases.GetGifUseCase
 import com.example.developerslifekotlin.utils.BaseRxViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -28,8 +28,8 @@ class GifViewViewModel @Inject constructor(
     val status: LiveData<DevelopersLifeApiStatus>
         get() = _status
 
-    private val _gif = MutableLiveData<DatabaseGif>()
-    val gif: LiveData<DatabaseGif>
+    private val _gif = MutableLiveData<DomainGif>()
+    val gif: LiveData<DomainGif>
         get() = _gif
 
     val descriptionVisible = Transformations.map(status) {
@@ -61,7 +61,7 @@ class GifViewViewModel @Inject constructor(
     }
 
     private fun getGif(category: DevelopersLifeApiFilter, id: Int) {
-        getGifUseCase(category, id)
+        getGifUseCase(category.value, id)
             .subscribeOn(Schedulers.io())
             .doOnSubscribe { _status.value = DevelopersLifeApiStatus.LOADING }
             .observeOn(AndroidSchedulers.mainThread())

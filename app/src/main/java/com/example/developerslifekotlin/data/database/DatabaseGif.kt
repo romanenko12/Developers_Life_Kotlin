@@ -14,5 +14,5 @@ data class DatabaseGif(
     val url: String,
 
     @ColumnInfo(name = "description")
-    var description: String,
+    var description: String
 )

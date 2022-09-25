@@ -7,7 +7,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.developerslifekotlin.R
-import com.example.developerslifekotlin.gifview.DevelopersLifeApiStatus
+import com.example.developerslifekotlin.presentation.gifview.DevelopersLifeApiStatus
 
 @BindingAdapter("imageUrl")
 fun bindImage(imgView: ImageView, imgUrl: String?) {

@@ -1,6 +1,6 @@
-package com.example.developerslifekotlin.usecases
+package com.example.developerslifekotlin.domain.usecases
 
-import com.example.developerslifekotlin.data.repository.GifRepository
+import com.example.developerslifekotlin.domain.repository.GifRepository
 import io.reactivex.rxjava3.core.Completable
 import javax.inject.Inject
 

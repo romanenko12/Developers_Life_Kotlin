@@ -1,4 +1,4 @@
-package com.example.developerslifekotlin.mappers
+package com.example.developerslifekotlin.data.mappers
 
 import com.example.developerslifekotlin.data.database.DatabaseGif
 import com.example.developerslifekotlin.data.network.GifsProperty

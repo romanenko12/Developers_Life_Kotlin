@@ -1,17 +1,16 @@
-package com.example.developerslifekotlin.usecases
+package com.example.developerslifekotlin.domain.usecases
 
-import com.example.developerslifekotlin.data.database.DatabaseGif
-import com.example.developerslifekotlin.data.network.DevelopersLifeApiFilter
-import com.example.developerslifekotlin.data.repository.GifRepository
+import com.example.developerslifekotlin.domain.entity.DomainGif
+import com.example.developerslifekotlin.domain.repository.GifRepository
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 interface GetGifUseCase {
     operator fun invoke(
-        category: DevelopersLifeApiFilter,
+        category: String,
         number: Int
-    ): Single<DatabaseGif>
+    ): Single<DomainGif>
 }
 
 class GetGifUseCaseImpl @Inject constructor(
@@ -21,9 +20,9 @@ class GetGifUseCaseImpl @Inject constructor(
     private val maxPage = 2000
 
     override fun invoke(
-        category: DevelopersLifeApiFilter,
+        category: String,
         number: Int
-    ): Single<DatabaseGif> {
+    ): Single<DomainGif> {
         val size = repository.getCount()
             .subscribeOn(Schedulers.io())
             .blockingGet()

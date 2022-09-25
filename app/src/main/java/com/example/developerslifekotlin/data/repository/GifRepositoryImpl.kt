@@ -1,43 +1,44 @@
 package com.example.developerslifekotlin.data.repository
 
-import com.example.developerslifekotlin.data.database.DatabaseGif
 import com.example.developerslifekotlin.data.database.GifsDatabaseDao
-import com.example.developerslifekotlin.data.network.DevelopersLifeApiFilter
 import com.example.developerslifekotlin.data.network.DevelopersLifeApiService
-import com.example.developerslifekotlin.mappers.asDatabaseModel
+import com.example.developerslifekotlin.data.mappers.asDatabaseModel
+import com.example.developerslifekotlin.data.mappers.asDomainModel
+import com.example.developerslifekotlin.domain.entity.DomainGif
+import com.example.developerslifekotlin.domain.repository.GifRepository
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-class GifRepository(
+class GifRepositoryImpl(
     private val database: GifsDatabaseDao,
     private val server: DevelopersLifeApiService
-) {
+) : GifRepository {
 
-    fun downloadGifFromServer(category: DevelopersLifeApiFilter, number: Int): Single<DatabaseGif> {
-        return server.getProperties(category.value, number)
+    override fun downloadGifFromServer(category: String, number: Int): Single<DomainGif> {
+        return server.getProperties(category, number)
             .subscribeOn(Schedulers.io())
             .map {
-                it.asDatabaseModel()
+                it.asDomainModel()
             }
             .doOnSuccess {
-                database.insert(it)
+                database.insert(it.asDatabaseModel())
                     .subscribeOn(Schedulers.io())
                     .subscribeBy()
             }
     }
 
-    fun getGifFromDatabase(id: Int): Single<DatabaseGif> {
-        return database.get(id)
+    override fun getGifFromDatabase(id: Int): Single<DomainGif> {
+        return database.get(id).map { it.asDomainModel() }
     }
 
-    fun getCount(): Maybe<Int> {
+    override fun getCount(): Maybe<Int> {
         return database.size()
     }
 
-    fun clearDatabase(): Completable {
+    override fun clearDatabase(): Completable {
         return Completable.fromCallable {
             database.clear()
             database.resetTable()

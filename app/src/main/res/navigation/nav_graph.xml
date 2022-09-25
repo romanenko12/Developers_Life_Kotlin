@@ -6,6 +6,6 @@
     app:startDestination="@id/gifViewFragment">
     <fragment
         android:id="@+id/gifViewFragment"
-        android:name="com.example.developerslifekotlin.gifview.GifViewFragment"
+        android:name="com.example.developerslifekotlin.presentation.gifview.GifViewFragment"
         android:label="GifViewFragment" />
 </navigation>

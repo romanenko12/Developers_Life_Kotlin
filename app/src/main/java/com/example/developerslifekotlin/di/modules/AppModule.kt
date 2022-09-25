@@ -5,7 +5,8 @@ import com.example.developerslifekotlin.data.database.DatabaseInit
 import com.example.developerslifekotlin.data.database.GifsDatabaseDao
 import com.example.developerslifekotlin.data.network.DevelopersLifeApi
 import com.example.developerslifekotlin.data.network.DevelopersLifeApiService
-import com.example.developerslifekotlin.data.repository.GifRepository
+import com.example.developerslifekotlin.data.repository.GifRepositoryImpl
+import com.example.developerslifekotlin.domain.repository.GifRepository
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -24,7 +25,7 @@ class AppModule {
         localDataSource: GifsDatabaseDao,
         remoteDataSource: DevelopersLifeApiService
     ): GifRepository {
-        return GifRepository(
+        return GifRepositoryImpl(
             localDataSource,
             remoteDataSource
         )

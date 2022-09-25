@@ -12,7 +12,8 @@ import retrofit2.http.Path
 enum class DevelopersLifeApiFilter(val value: String) {
     SHOW_LATEST("latest"),
     SHOW_TOP("top"),
-    SHOW_HOT("hot") }
+    SHOW_HOT("hot")
+}
 
 private const val BASE_URL = "https://developerslife.ru"
 

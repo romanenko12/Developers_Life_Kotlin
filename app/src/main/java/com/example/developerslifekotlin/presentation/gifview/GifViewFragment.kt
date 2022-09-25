@@ -1,4 +1,4 @@
-package com.example.developerslifekotlin.gifview
+package com.example.developerslifekotlin.presentation.gifview
 
 import android.content.Context
 import android.os.Bundle
